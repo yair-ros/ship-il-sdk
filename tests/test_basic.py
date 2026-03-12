@@ -1,2 +1,5 @@
+import importlib
+
+
 def test_import():
-    import ship_il_sdk
+    assert importlib.import_module("ship_il_sdk") is not None

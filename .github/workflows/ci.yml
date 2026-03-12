@@ -13,8 +13,8 @@ jobs:
         with:
           python-version: '3.11'
 
-      - run: pip install -e .
-      - run: pip install pytest ruff mypy
-
-      - run: ruff check .
-      - run: pytest
+      - run: python -m venv .venv
+      - run: make install
+      - run: ./.venv/bin/pip install -e .
+      - run: make lint
+      - run: make test

@@ -1,4 +1,4 @@
-.PHONY: install lint format check-black check-flake8 example-getclosestpoints example-insertpickupshipmentex example-get-wb-thermal-or-a4-for-print
+.PHONY: install lint test format check-black check-flake8 example-getclosestpoints example-insertpickupshipmentex example-get-wb-thermal-or-a4-for-print
 
 VENV_ACTIVATE = source ./.venv/bin/activate
 VENV_BIN = ./.venv/bin
@@ -22,6 +22,10 @@ check-flake8:
 lint: check-flake8
 	@echo "✅ Running flake8..."
 	$(VENV_BIN)/flake8 src
+
+test:
+	@echo "✅ Running pytest..."
+	PYTHONPATH=src $(VENV_BIN)/pytest -q
 
 format: check-black
 	@echo "✅ Running black..."
