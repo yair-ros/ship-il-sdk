@@ -8,12 +8,13 @@ version = "0.1.0"
 description = "Production-grade Python SDK for SHIP Israel API"
 readme = "README.md"
 authors = [{name="Yair Rosenfeld"}]
+license = "MIT"
 requires-python = ">=3.9"
 keywords = ["ship", "sdk", "logistics", "shipping", "api"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: Other/Proprietary License",
+    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.9",
@@ -44,6 +45,7 @@ Repository = "https://github.com/yair-ros/ship-il-sdk"
 
 [tool.setuptools]
 include-package-data = true
+license-files = ["LICENSE"]
 
 [tool.setuptools.package-dir]
 "" = "src"
