@@ -17,6 +17,8 @@ htmlcov/
 venv/
 env/
 ENV/
+.env
+.env.*
 
 # Packaging and build artifacts
 build/

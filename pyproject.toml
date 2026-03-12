@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ship-il-sdk"
+version = "0.1.0"
+description = "Production-grade Python SDK for SHIP Israel API"
+readme = "README.md"
+authors = [{name="Yair Rosenfeld"}]
+requires-python = ">=3.9"
+keywords = ["ship", "sdk", "logistics", "shipping", "api"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: Other/Proprietary License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "requests",
+    "httpx",
+    "pydantic",
+    "tenacity",
+    "structlog"
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "flake8",
+    "pytest",
+]
+
+[project.urls]
+Homepage = "https://github.com/yair-ros/ship-il-sdk"
+Repository = "https://github.com/yair-ros/ship-il-sdk"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["ship_il_sdk", "ship_il_sdk.*"]
+
+[tool.black]
+line-length = 130
+target-version = ["py313"]
+exclude = '''
+/(
+    \.git
+  | \.venv
+  | build
+  | dist
+  | __pycache__
+)/
+'''
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
