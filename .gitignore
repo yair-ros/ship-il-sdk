@@ -19,6 +19,7 @@ env/
 ENV/
 .env
 .env.*
+scripts/integration_test.env
 
 # Packaging and build artifacts
 build/

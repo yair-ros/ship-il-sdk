@@ -1,15 +1,14 @@
 import requests
 
-from .config import Environment
 from .auth import authenticate
-from .token_manager import TokenManager
-from .logging import get_logger
-from .exceptions import ShipAPIError
-from .transport.parsing import parse_model
-
-from .endpoints.shipments import ShipmentsAPI
-from .endpoints.points import PointsAPI
+from .config import Environment
 from .endpoints.labels import LabelsAPI
+from .endpoints.points import PointsAPI
+from .endpoints.shipments import ShipmentsAPI
+from .exceptions import ShipAPIError
+from .logging import get_logger
+from .token_manager import TokenManager
+from .transport.parsing import parse_model
 
 
 class ShipClient:

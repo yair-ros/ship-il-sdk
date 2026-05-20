@@ -1,5 +1,5 @@
-from .client import ShipClient
 from .async_client import AsyncShipClient
+from .client import ShipClient
 from .config import Environment
 from .shipment_preparation import (
     build_consignee_address,

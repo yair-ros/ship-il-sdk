@@ -1,12 +1,12 @@
 import httpx
 
 from .config import Environment
+from .endpoints.specs import GET_CLOSEST_POINTS
 from .exceptions import ShipAPIError
 from .logging import get_logger
+from .models.points import ClosestPointsResponse
 from .token_manager import TokenManager
 from .transport.parsing import parse_model
-from .endpoints.specs import GET_CLOSEST_POINTS
-from .models.points import ClosestPointsResponse
 
 
 class AsyncShipClient:
@@ -55,7 +55,9 @@ class AsyncShipClient:
 
         self.tokens.set_token(self.token, ttl=int(data.get("expires_in", 3600)))
         self.client.headers["Authorization"] = f"Bearer {self.token}"
-        self.logger.info("token_refreshed", expires_in=int(data.get("expires_in", 3600)))
+        self.logger.info(
+            "token_refreshed", expires_in=int(data.get("expires_in", 3600))
+        )
 
     async def _ensure_token(self):
         if self.tokens.is_expired():
