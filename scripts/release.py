@@ -100,15 +100,18 @@ def main() -> None:
     if run(["git", "tag", "--list", tag], capture=True):
         raise SystemExit(f"Tag already exists: {tag}")
 
+    old_version = read_project_version()
     write_project_version(version)
+    version_changed = version != old_version
 
     run(["make", "lint", f"PYTHON={args.python}"])
     run(["make", "typecheck", f"PYTHON={args.python}"])
     run(["make", "test", f"PYTHON={args.python}"])
     run(["make", "clean", "package", f"PYTHON={args.python}"])
 
-    run(["git", "add", "pyproject.toml"])
-    run(["git", "commit", "-m", f"Release {tag}"])
+    if version_changed:
+        run(["git", "add", "pyproject.toml"])
+        run(["git", "commit", "-m", f"Release {tag}"])
     run(["git", "tag", "-a", tag, "-m", f"Release {tag}"])
     run(["git", "push", "origin", branch])
     run(["git", "push", "origin", tag])
