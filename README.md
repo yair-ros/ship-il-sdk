@@ -13,15 +13,15 @@ PyPI: <https://pypi.org/project/ship-il-sdk/>
 
 ## Documentation
 
-- [Usage guide](docs/usage.md): how to use this Python SDK.
-- [SDK API reference](docs/api.md): Python classes, methods, return values, and exceptions.
-- [OpenAPI contract](docs/openapi.yaml): raw SHIP HTTP API contract for the endpoints currently wrapped by this SDK.
+- [Usage guide](https://github.com/yair-ros/ship-il-sdk/blob/main/docs/usage.md): how to use this Python SDK.
+- [SDK API reference](https://github.com/yair-ros/ship-il-sdk/blob/main/docs/api.md): Python classes, methods, return values, and exceptions.
+- [OpenAPI contract](https://github.com/yair-ros/ship-il-sdk/blob/main/docs/openapi.yaml): raw SHIP HTTP API contract for the endpoints currently wrapped by this SDK.
 - [SHIP Authentication wiki](https://wiki.ship.co.il/en/api/Authentication)
 - [SHIP Shipments wiki](https://wiki.ship.co.il/en/api/Shipments)
 - [SHIP Booking wiki](https://wiki.ship.co.il/en/api/Booking)
-- [Contributing guide](CONTRIBUTING.md)
+- [Contributing guide](https://github.com/yair-ros/ship-il-sdk/blob/main/CONTRIBUTING.md)
 - [Changelog](https://github.com/yair-ros/ship-il-sdk/blob/main/CHANGELOG.md)
-- [Security policy](SECURITY.md)
+- [Security policy](https://github.com/yair-ros/ship-il-sdk/blob/main/SECURITY.md)
 
 The OpenAPI file documents the vendor HTTP endpoints, not the Python SDK itself.
 It is included as a reference for API tooling, contract review, mock servers, or
