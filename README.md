@@ -16,6 +16,9 @@ PyPI: <https://pypi.org/project/ship-il-sdk/>
 - [Usage guide](docs/usage.md): how to use this Python SDK.
 - [SDK API reference](docs/api.md): Python classes, methods, return values, and exceptions.
 - [OpenAPI contract](docs/openapi.yaml): raw SHIP HTTP API contract for the endpoints currently wrapped by this SDK.
+- [SHIP Authentication wiki](https://wiki.ship.co.il/en/api/Authentication)
+- [SHIP Shipments wiki](https://wiki.ship.co.il/en/api/Shipments)
+- [SHIP Booking wiki](https://wiki.ship.co.il/en/api/Booking)
 - [Contributing guide](CONTRIBUTING.md)
 - [Changelog](CHANGELOG.md)
 - [Security policy](SECURITY.md)
@@ -152,6 +155,20 @@ response = client.shipments.insert_pickup_shipment(shipment)
 print(response.Result.TrackingNumber)
 ```
 
+Additional shipment operations currently exposed by the SDK:
+
+- `insert_standard_shipment(...)`
+- `insert_pickup_shipment(...)`
+- `insert_pickup_drop_shipment(...)`
+- `insert_picking_list(...)`
+- `print_wb_order_details(...)`
+- `get_wb_status(...)`
+- `get_pricing(...)`
+
+The repository no longer keeps standalone example scripts under `examples/`.
+Use `scripts/integration_test.py` for real DEV verification and `docs/usage.md`
+for copy-paste SDK usage patterns.
+
 ## Supported Workflow
 
 The SDK supports a generic flow that does not depend on any specific commerce
@@ -166,6 +183,14 @@ platform:
 
 For conservative automatic recommendation, use `recommend_pickup_point(...)`.
 If it returns `None`, require manual pickup selection.
+
+## Official API References
+
+The SDK implementation should be reviewed against the official SHIP docs:
+
+- Authentication: [wiki.ship.co.il/en/api/Authentication](https://wiki.ship.co.il/en/api/Authentication)
+- Shipments: [wiki.ship.co.il/en/api/Shipments](https://wiki.ship.co.il/en/api/Shipments)
+- Booking: [wiki.ship.co.il/en/api/Booking](https://wiki.ship.co.il/en/api/Booking)
 
 ## Error Handling
 

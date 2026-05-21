@@ -3,6 +3,12 @@
 This SDK wraps the SHIP Israel authentication, pickup-point, shipment, and
 label endpoints.
 
+Official SHIP docs:
+
+- [Authentication](https://wiki.ship.co.il/en/api/Authentication)
+- [Shipments](https://wiki.ship.co.il/en/api/Shipments)
+- [Booking](https://wiki.ship.co.il/en/api/Booking)
+
 ## Authenticate and Find Pickup Points
 
 ```python
@@ -70,6 +76,72 @@ shipment = build_pickup_shipment_request_from_point(
 
 response = client.shipments.insert_pickup_shipment(shipment)
 print(response.Result.TrackingNumber)
+```
+
+## Create a Pickup-Drop Shipment
+
+```python
+response = client.shipments.insert_pickup_drop_shipment(shipment)
+print(response.Result.TrackingNumber)
+```
+
+## Create a Standard Shipment
+
+```python
+from ship_il_sdk import (
+    Environment,
+    ShipClient,
+    StandardShipmentRequest,
+    build_standard_address,
+)
+
+client = ShipClient(
+    username="YOUR_USERNAME",
+    password="YOUR_PASSWORD",
+    customer_id="YOUR_CUSTOMER_ID",
+    environment=Environment.DEV,
+)
+
+standard = StandardShipmentRequest(
+    Weight=1.5,
+    NumberOfPackages=1,
+    ConsigneeAddress=build_standard_address(
+        city_name="Tel Aviv",
+        street_name="Herzl",
+        house_number="10",
+        contact_person="Dana Cohen",
+        customer_name="Dana Cohen",
+        phone="1234567",
+        phone_prefix="03",
+        mobile="1234567",
+        mobile_prefix="050",
+    ),
+    UseDefaultShipperAddress=True,
+)
+
+response = client.shipments.insert_standard_shipment(standard)
+print(response.Result.TrackingNumber)
+```
+
+## Additional Shipments Endpoints
+
+```python
+status = client.shipments.get_wb_status(trackingNumber="YOUR_TRACKING_NUMBER")
+details = client.shipments.print_wb_order_details(
+    trackingNumbers="YOUR_TRACKING_NUMBER",
+    isA4Format=False,
+)
+pricing = client.shipments.get_pricing(
+    {
+        "PackageType": 2,
+        "IsExport": True,
+        "ShipmentValue": 10,
+        "ToZipCode": "10015",
+        "ToCountryCode": "US",
+        "ToCity": "New york",
+        "Packages": [{"Length": 0, "Width": 0, "Height": 0, "Weight": 10}],
+    }
+)
 ```
 
 ## Download a Label

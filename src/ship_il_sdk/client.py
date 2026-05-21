@@ -1,3 +1,5 @@
+import base64
+
 import requests
 
 from .auth import authenticate
@@ -54,7 +56,7 @@ class ShipClient:
         if self.tokens.is_expired():
             self.login()
 
-    def _request(self, method, endpoint, **kwargs):
+    def _request_response(self, method, endpoint, **kwargs):
         self._ensure_token()
 
         r = self.session.request(
@@ -74,8 +76,35 @@ class ShipClient:
             status=r.status_code,
         )
 
-        return r.json()
+        return r
+
+    def _request(self, method, endpoint, **kwargs):
+        return self._request_response(method, endpoint, **kwargs).json()
 
     def _request_model(self, spec, **kwargs):
-        data = self._request(spec.method, spec.path, **kwargs)
+        response = self._request_response(spec.method, spec.path, **kwargs)
+        data = self._decode_response_for_model(spec.response_model, response)
+        if spec.response_model is None:
+            return data
         return parse_model(spec.response_model, data)
+
+    def _decode_response_for_model(self, response_model, response):
+        try:
+            return response.json()
+        except requests.exceptions.JSONDecodeError:
+            if response_model is None:
+                raise
+            if hasattr(response_model, "model_fields"):
+                field_names = set(response_model.model_fields)
+                if {"MediaType", "FileByteArray"}.issubset(field_names):
+                    return {
+                        "MediaType": response.headers.get(
+                            "Content-Type",
+                            "application/octet-stream",
+                        ),
+                        "FileByteArray": base64.b64encode(response.content).decode(
+                            "ascii"
+                        ),
+                        "FileName": None,
+                    }
+            raise

@@ -94,4 +94,7 @@ class AsyncShipClient:
             status=r.status_code,
         )
 
+        if GET_CLOSEST_POINTS.response_model is None:
+            raise ShipAPIError("Closest-points response model is not configured")
+
         return parse_model(GET_CLOSEST_POINTS.response_model, r.json())

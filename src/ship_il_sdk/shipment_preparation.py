@@ -5,6 +5,7 @@ from .models.shipments import (
     ShipAddressInputModel,
     ShipmentPreparationInput,
     ShipmentRequest,
+    StandardAddressInputModel,
 )
 
 
@@ -38,6 +39,49 @@ def build_consignee_address(
         RoomNumber=room_number,
         Floor=floor,
         ZipCode=zip_code,
+    )
+
+
+def build_standard_address(
+    *,
+    city_name: str,
+    street_name: str,
+    house_number: str,
+    contact_person: str,
+    customer_name: str,
+    phone: str,
+    phone_prefix: str,
+    mobile: str,
+    mobile_prefix: str,
+    city_code: Optional[int] = None,
+    street_code: Optional[int] = None,
+    location_description: Optional[str] = None,
+    floor: Optional[str] = None,
+    room_number: Optional[str] = None,
+    contact_email: Optional[str] = None,
+    zip_code: Optional[str] = None,
+    tel: Optional[str] = None,
+    tel2: Optional[str] = None,
+) -> StandardAddressInputModel:
+    return StandardAddressInputModel(
+        CustomerName=customer_name,
+        CityName=city_name,
+        CityCode=city_code,
+        ContactPerson=contact_person,
+        StreetCode=street_code,
+        StreetName=street_name,
+        Phone=phone,
+        PhonePrefix=phone_prefix,
+        Mobile=mobile,
+        MobilePrefix=mobile_prefix,
+        LocationDescription=location_description,
+        HouseNumber=str(house_number),
+        Floor=floor,
+        RoomNumber=room_number,
+        ContactEmail=contact_email,
+        ZipCode=zip_code,
+        Tel=tel,
+        Tel2=tel2,
     )
 
 

@@ -1,5 +1,11 @@
 # API Reference
 
+Official SHIP docs:
+
+- [Authentication](https://wiki.ship.co.il/en/api/Authentication)
+- [Shipments](https://wiki.ship.co.il/en/api/Shipments)
+- [Booking](https://wiki.ship.co.il/en/api/Booking)
+
 ## `ShipClient`
 
 ```python
@@ -56,12 +62,80 @@ Returns `ClosestPointsResponse`.
 Calls:
 
 ```text
+POST /api/v1/shipments/insert-pickup-shipment-ex
+```
+
+Accepts `ShipmentRequest`.
+
+Returns `ShipmentResponse`.
+
+### `client.shipments.insert_pickup_drop_shipment(...)`
+
+Calls:
+
+```text
 POST /api/v1/shipments/drop-pickup-ex
 ```
 
 Accepts `ShipmentRequest`.
 
 Returns `ShipmentResponse`.
+
+### `client.shipments.insert_standard_shipment(...)`
+
+Calls:
+
+```text
+POST /api/v1/shipments/insert-shipment-ex
+```
+
+Accepts `StandardShipmentRequest`.
+
+Returns `ShipmentResponse`.
+
+### `client.shipments.insert_picking_list(...)`
+
+Calls:
+
+```text
+POST /api/v1/shipments/InsertPickingList
+```
+
+Accepts `PickingListRequest`.
+
+Returns `PickingListResponse`.
+
+### `client.shipments.print_wb_order_details(...)`
+
+Calls:
+
+```text
+GET /api/v1/shipments/PrintWBOrderDetails
+```
+
+Returns `FileResponse`.
+
+### `client.shipments.get_wb_status(...)`
+
+Calls:
+
+```text
+GET /api/v1/shipments/wb-status
+```
+
+Returns `WbStatusResponse`.
+
+### `client.shipments.get_pricing(...)`
+
+Calls:
+
+```text
+POST /api/v1/priceList/get-pricing
+```
+
+Accepts `PricingRequest`.
+
+Returns `PricingResponse`.
 
 ### `client.labels.download_label(...)`
 
@@ -78,6 +152,10 @@ Returns `LabelResponse`.
 ### `build_consignee_address(...)`
 
 Builds `ShipAddressInputModel`.
+
+### `build_standard_address(...)`
+
+Builds `StandardAddressInputModel`.
 
 ### `build_shipment_preparation(...)`
 

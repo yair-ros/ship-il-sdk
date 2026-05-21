@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Generic, Type, TypeVar
+from typing import Generic, Optional, Type, TypeVar
 
 ResponseT = TypeVar("ResponseT")
 
@@ -9,4 +9,4 @@ class EndpointSpec(Generic[ResponseT]):
     name: str
     method: str
     path: str
-    response_model: Type[ResponseT]
+    response_model: Optional[Type[ResponseT]]

@@ -3,6 +3,7 @@ from ship_il_sdk import (
     build_pickup_shipment_request,
     build_pickup_shipment_request_from_point,
     build_shipment_preparation,
+    build_standard_address,
     recommend_pickup_point,
 )
 from ship_il_sdk.models.points import ClosestPointsResponse, PickupPoint
@@ -105,3 +106,21 @@ def test_recommend_pickup_point_returns_first_when_gap_is_clear():
     )
 
     assert recommend_pickup_point(response).PointID == "PKPS1"
+
+
+def test_build_standard_address():
+    address = build_standard_address(
+        city_name="Tel Aviv",
+        street_name="Herzl",
+        house_number="10",
+        contact_person="Yair Rosenfeld",
+        customer_name="Yair Rosenfeld",
+        phone="1234567",
+        phone_prefix="03",
+        mobile="1234567",
+        mobile_prefix="050",
+    )
+
+    assert address.Phone == "1234567"
+    assert address.PhonePrefix == "03"
+    assert address.MobilePrefix == "050"
