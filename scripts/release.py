@@ -89,12 +89,17 @@ def main() -> None:
         default=sys.executable,
         help="Python executable to use for Makefile verification targets.",
     )
+    parser.add_argument(
+        "--version",
+        default=None,
+        help="Explicit version to release (e.g. 0.2.0). Defaults to next patch increment.",
+    )
     args = parser.parse_args()
 
     branch = current_branch()
     require_clean_tracked_changes()
 
-    version = next_patch_version()
+    version = args.version if args.version else next_patch_version()
     tag = f"v{version}"
 
     if run(["git", "tag", "--list", tag], capture=True):
