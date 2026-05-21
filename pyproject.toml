@@ -44,6 +44,7 @@ dev = [
 [project.urls]
 Homepage = "https://github.com/yair-ros/ship-il-sdk"
 Repository = "https://github.com/yair-ros/ship-il-sdk"
+Changelog = "https://github.com/yair-ros/ship-il-sdk/blob/main/CHANGELOG.md"
 
 [tool.setuptools.package-dir]
 "" = "src"

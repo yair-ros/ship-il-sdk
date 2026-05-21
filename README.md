@@ -20,7 +20,7 @@ PyPI: <https://pypi.org/project/ship-il-sdk/>
 - [SHIP Shipments wiki](https://wiki.ship.co.il/en/api/Shipments)
 - [SHIP Booking wiki](https://wiki.ship.co.il/en/api/Booking)
 - [Contributing guide](CONTRIBUTING.md)
-- [Changelog](CHANGELOG.md)
+- [Changelog](https://github.com/yair-ros/ship-il-sdk/blob/main/CHANGELOG.md)
 - [Security policy](SECURITY.md)
 
 The OpenAPI file documents the vendor HTTP endpoints, not the Python SDK itself.
