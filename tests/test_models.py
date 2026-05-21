@@ -1,3 +1,9 @@
+from ship_il_sdk.models.booking import (
+    CancelBookingResponse,
+    ExportBookingResponse,
+    PickupDatesResponse,
+    PickupTimeOption,
+)
 from ship_il_sdk.models.shipments import (
     FileResponse,
     LabelResponse,
@@ -20,6 +26,47 @@ def test_label_response_decodes_bytes():
     )
 
     assert label.file_bytes() == b"hello"
+
+
+def test_pickup_dates_response_parses():
+    response = PickupDatesResponse.model_validate(
+        {
+            "Dates": [{"Id": "21/05/2026", "Title": "Thursday - 21/05/2026"}],
+            "ErrorMessage": None,
+        }
+    )
+
+    assert response.Dates[0].Id == "21/05/2026"
+
+
+def test_pickup_time_option_parses():
+    option = PickupTimeOption.model_validate(
+        {
+            "FromTime": "08:00",
+            "ToTime": "16:50",
+            "ServiceType": 31,
+            "Free": False,
+        }
+    )
+
+    assert option.ServiceType == 31
+    assert option.Free is False
+
+
+def test_export_booking_response_parses():
+    response = ExportBookingResponse.model_validate(
+        {"BookingNumber": "312312", "Error": ""}
+    )
+
+    assert response.BookingNumber == "312312"
+
+
+def test_cancel_booking_response_parses_string_success():
+    response = CancelBookingResponse.model_validate(
+        {"IsSuccess": "true", "Error": ""}
+    )
+
+    assert response.IsSuccess is True
 
 
 def test_file_response_decodes_bytes_without_filename():

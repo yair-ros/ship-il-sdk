@@ -1,3 +1,14 @@
+from .booking import (
+    BookingAddress,
+    BookingCustomerInfo,
+    BookingDateOption,
+    BookingRequest,
+    CancelBookingRequest,
+    CancelBookingResponse,
+    ExportBookingResponse,
+    PickupDatesResponse,
+    PickupTimeOption,
+)
 from .points import ClosestPointsResponse, PickupPoint
 from .shipments import (
     FileResponse,
@@ -20,13 +31,22 @@ from .shipments import (
 )
 
 __all__ = [
+    "BookingAddress",
+    "BookingCustomerInfo",
+    "BookingDateOption",
+    "BookingRequest",
+    "CancelBookingRequest",
+    "CancelBookingResponse",
     "ClosestPointsResponse",
+    "ExportBookingResponse",
     "FileResponse",
     "LabelResponse",
     "PickingListItem",
     "PickingListRequest",
     "PickingListResponse",
+    "PickupDatesResponse",
     "PickupPoint",
+    "PickupTimeOption",
     "PricingPackage",
     "PricingOption",
     "PricingRequest",

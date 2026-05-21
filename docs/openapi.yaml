@@ -35,6 +35,18 @@ paths:
       responses:
         "200":
           description: Token response
+  /api/v1/pickups/dates-ex:
+    get:
+      summary: Get available pickup dates
+      responses:
+        "200":
+          description: Pickup dates response
+  /api/v1/pickups/time-ex:
+    get:
+      summary: Get available pickup time ranges
+      responses:
+        "200":
+          description: Pickup time ranges response
   /api/v1/pickups/getclosestpoints:
     get:
       summary: Get closest pickup points
@@ -67,6 +79,24 @@ paths:
       responses:
         "200":
           description: Closest pickup points
+  /api/v3/pickups/insert/pickup/domestic:
+    post:
+      summary: Create a domestic pickup booking
+      responses:
+        "200":
+          description: Booking number string
+  /api/v4/pickups/insert/pickup/export:
+    post:
+      summary: Create an export pickup booking
+      responses:
+        "200":
+          description: Export booking response
+  /api/v3/pickups/cancel/pickup:
+    delete:
+      summary: Cancel a pickup booking
+      responses:
+        "200":
+          description: Cancel booking response
   /api/v1/shipments/drop-pickup-ex:
     post:
       summary: Create a pickup shipment

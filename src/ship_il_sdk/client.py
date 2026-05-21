@@ -4,6 +4,7 @@ import requests
 
 from .auth import authenticate
 from .config import Environment
+from .endpoints.booking import BookingAPI
 from .endpoints.labels import LabelsAPI
 from .endpoints.points import PointsAPI
 from .endpoints.shipments import ShipmentsAPI
@@ -37,6 +38,7 @@ class ShipClient:
         )
 
         self.shipments = ShipmentsAPI(self)
+        self.bookings = BookingAPI(self)
         self.points = PointsAPI(self)
         self.labels = LabelsAPI(self)
 

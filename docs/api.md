@@ -47,6 +47,62 @@ Creates an asynchronous client for SHIP.
 
 ## Endpoints
 
+### `client.bookings.get_pickup_dates(...)`
+
+Calls:
+
+```text
+GET /api/v1/pickups/dates-ex
+```
+
+Returns `PickupDatesResponse`.
+
+### `client.bookings.get_pickup_times(...)`
+
+Calls:
+
+```text
+GET /api/v1/pickups/time-ex
+```
+
+Returns `list[PickupTimeOption]`.
+
+### `client.bookings.insert_domestic_booking(...)`
+
+Calls:
+
+```text
+POST /api/v3/pickups/insert/pickup/domestic
+```
+
+Accepts `BookingRequest`.
+
+Returns the raw booking number string from SHIP.
+
+### `client.bookings.insert_export_booking(...)`
+
+Calls:
+
+```text
+POST /api/v4/pickups/insert/pickup/export
+```
+
+Accepts `BookingRequest`.
+
+Returns `ExportBookingResponse`.
+
+### `client.bookings.cancel_booking(...)`
+
+Calls:
+
+```text
+DELETE /api/v3/pickups/cancel/pickup
+```
+
+Accepts `CancelBookingRequest`.
+
+Returns `CancelBookingResponse`.
+
 ### `client.points.get_closest_points(...)`
 
 Calls:

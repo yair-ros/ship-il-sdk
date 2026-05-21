@@ -30,6 +30,72 @@ points = client.points.get_closest_points(
 print(points.Points[0].PointID)
 ```
 
+## Booking Workflow
+
+```python
+from ship_il_sdk import (
+    BookingAddress,
+    BookingCustomerInfo,
+    BookingRequest,
+    Environment,
+    ShipClient,
+)
+
+client = ShipClient(
+    username="YOUR_USERNAME",
+    password="YOUR_PASSWORD",
+    customer_id="YOUR_CUSTOMER_ID",
+    environment=Environment.DEV,
+)
+
+dates = client.bookings.get_pickup_dates(
+    CustomerNumber="YOUR_CUSTOMER_ID",
+    CityName="Tel Aviv",
+    StreetName="Herzl",
+    ServiceType=31,
+    Domestic=True,
+    HolidayServiceType=1,
+)
+
+times = client.bookings.get_pickup_times(
+    CityName="Tel Aviv",
+    StreetName="Herzl",
+    SelectedDay=dates.Dates[0].Id,
+    ServiceType=31,
+    Domestic=True,
+)
+
+booking = BookingRequest(
+    ContactPerson="Dana Cohen",
+    OpenBy="SDK",
+    Weight=1.5,
+    ServiceNumber=31,
+    PackagesNumber=1,
+    IsFlatPlace=False,
+    ConfirmByMail=False,
+    PickupToTime=times[0].ToTime,
+    PickupFromTime=times[0].FromTime,
+    PickupDate=dates.Dates[0].Id,
+    CustomerInfo=BookingCustomerInfo(
+        Address=BookingAddress(
+            CustomerName="Dana Cohen",
+            CityName="Tel Aviv",
+            ContactPerson="Dana Cohen",
+            StreetName="Herzl",
+            Phone="1234567",
+            PhonePrefix="03",
+            Mobile="1234567",
+            MobilePrefix="050",
+            HouseNumber="10",
+        )
+    ),
+    PackageType=2,
+)
+
+booking_number = client.bookings.insert_domestic_booking(booking)
+print(booking_number)
+```
+
 ## Create a Pickup Shipment
 
 ```python

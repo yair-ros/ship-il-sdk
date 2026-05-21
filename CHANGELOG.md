@@ -6,6 +6,30 @@ The format is based on Keep a Changelog and this project uses SemVer.
 
 ## [Unreleased]
 
+## [0.2.3] - 2026-05-21
+
+### Added
+
+- Full `Booking` module support: `get_pickup_dates`, `get_pickup_times`, `insert_domestic_booking`, `insert_export_booking`, and `cancel_booking`
+- New booking models: `BookingAddress`, `BookingCustomerInfo`, `BookingDateOption`, `BookingRequest`, `PickupDatesResponse`, `PickupTimeOption`, `ExportBookingResponse`, `CancelBookingRequest`, and `CancelBookingResponse`
+- Booking integration flows in `scripts/integration_test.py`
+- Binary-response fallback tests in `tests/test_client.py`
+
+### Changed
+
+- Removed the obsolete `examples/` scripts and their `Makefile` targets
+- Aligned shipment and pricing contracts with the live SHIP API and official docs
+- `parse_model(...)` now supports typed collection responses via Pydantic `TypeAdapter`
+- `PrintWBOrderDetails` now supports binary payloads returned directly by SHIP instead of assuming JSON
+- `WbStatusResponse` now tolerates `ShipmentProgress=null`
+
+### Fixed
+
+- Standard shipment requests now use the correct address schema with `Phone`, `PhonePrefix`, `Mobile`, and `MobilePrefix`
+- Picking-list requests now use the documented `TrackNO` / `Items` payload shape
+- Pricing responses now parse the documented `ServicesPricing` wrapper
+- Shipment responses now tolerate `ReturnTrackingNumber=[]` from SHIP
+
 ## [0.2.0] - 2026-05-21
 
 ### Added

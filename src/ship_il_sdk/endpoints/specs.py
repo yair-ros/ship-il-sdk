@@ -1,3 +1,9 @@
+from ..models.booking import (
+    CancelBookingResponse,
+    ExportBookingResponse,
+    PickupDatesResponse,
+    PickupTimeOption,
+)
 from ..contracts import EndpointSpec
 from ..models.points import ClosestPointsResponse
 from ..models.shipments import (
@@ -16,11 +22,46 @@ GET_CLOSEST_POINTS = EndpointSpec(
     response_model=ClosestPointsResponse,
 )
 
+GET_PICKUP_DATES = EndpointSpec(
+    name="get_pickup_dates",
+    method="GET",
+    path="/api/v1/pickups/dates-ex",
+    response_model=PickupDatesResponse,
+)
+
+GET_PICKUP_TIMES = EndpointSpec(
+    name="get_pickup_times",
+    method="GET",
+    path="/api/v1/pickups/time-ex",
+    response_model=list[PickupTimeOption],
+)
+
 INSERT_PICKUP_SHIPMENT = EndpointSpec(
     name="insert_pickup_shipment",
     method="POST",
     path="/api/v1/shipments/insert-pickup-shipment-ex",
     response_model=ShipmentResponse,
+)
+
+INSERT_DOMESTIC_BOOKING: EndpointSpec[None] = EndpointSpec(
+    name="insert_domestic_booking",
+    method="POST",
+    path="/api/v3/pickups/insert/pickup/domestic",
+    response_model=None,
+)
+
+INSERT_EXPORT_BOOKING = EndpointSpec(
+    name="insert_export_booking",
+    method="POST",
+    path="/api/v4/pickups/insert/pickup/export",
+    response_model=ExportBookingResponse,
+)
+
+CANCEL_BOOKING = EndpointSpec(
+    name="cancel_booking",
+    method="DELETE",
+    path="/api/v3/pickups/cancel/pickup",
+    response_model=CancelBookingResponse,
 )
 
 INSERT_PICKUP_DROP_SHIPMENT = EndpointSpec(

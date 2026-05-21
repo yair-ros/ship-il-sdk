@@ -1,8 +1,7 @@
-from typing import Type
+from pydantic import TypeAdapter
 
 
-def parse_model(model: Type, data):
+def parse_model(model, data):
     if hasattr(model, "model_validate"):
         return model.model_validate(data)
-
-    return model.parse_obj(data)
+    return TypeAdapter(model).validate_python(data)

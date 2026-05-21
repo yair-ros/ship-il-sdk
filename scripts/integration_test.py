@@ -7,6 +7,10 @@ from pathlib import Path
 from typing import Any
 
 from ship_il_sdk import (
+    BookingAddress,
+    BookingCustomerInfo,
+    BookingRequest,
+    CancelBookingRequest,
     Environment,
     PickingListItem,
     PickingListRequest,
@@ -47,6 +51,11 @@ class Config:
     run_insert_pickup_shipment: bool
     run_insert_pickup_drop_shipment: bool
     run_insert_standard_shipment: bool
+    run_get_pickup_dates: bool
+    run_get_pickup_times: bool
+    run_insert_domestic_booking: bool
+    run_insert_export_booking: bool
+    run_cancel_booking: bool
     run_insert_picking_list: bool
     run_print_wb_order_details: bool
     run_get_wb_status: bool
@@ -78,6 +87,7 @@ class Config:
     print_wb_order_details_params: dict[str, Any] | None
     wb_status_params: dict[str, Any] | None
     pricing_payload: Any | None
+    booking_cancel_reason: str
     run_download_label: bool
     tracking_number: str | None
     label_format: str
@@ -190,6 +200,13 @@ def load_config() -> Config:
         run_insert_standard_shipment=bool_value(
             values, "SHIP_RUN_INSERT_STANDARD_SHIPMENT"
         ),
+        run_get_pickup_dates=bool_value(values, "SHIP_RUN_GET_PICKUP_DATES"),
+        run_get_pickup_times=bool_value(values, "SHIP_RUN_GET_PICKUP_TIMES"),
+        run_insert_domestic_booking=bool_value(
+            values, "SHIP_RUN_INSERT_DOMESTIC_BOOKING"
+        ),
+        run_insert_export_booking=bool_value(values, "SHIP_RUN_INSERT_EXPORT_BOOKING"),
+        run_cancel_booking=bool_value(values, "SHIP_RUN_CANCEL_BOOKING"),
         run_insert_picking_list=bool_value(values, "SHIP_RUN_INSERT_PICKING_LIST"),
         run_print_wb_order_details=bool_value(
             values, "SHIP_RUN_PRINT_WB_ORDER_DETAILS"
@@ -234,6 +251,10 @@ def load_config() -> Config:
         ),
         wb_status_params=json_value(values, "SHIP_WB_STATUS_PARAMS_JSON"),
         pricing_payload=json_value(values, "SHIP_PRICING_PAYLOAD_JSON"),
+        booking_cancel_reason=values.get(
+            "SHIP_BOOKING_CANCEL_REASON",
+            "SDK integration test cleanup",
+        ).strip(),
         run_download_label=bool_value(values, "SHIP_RUN_DOWNLOAD_LABEL"),
         tracking_number=optional_value(values, "SHIP_TRACKING_NUMBER"),
         label_format=values.get("SHIP_LABEL_FORMAT", "thermal").strip(),
@@ -460,6 +481,49 @@ def build_pricing_payload(payload: Any | None):
     )
 
 
+def build_booking_address(config: Config) -> BookingAddress:
+    mobile_prefix, mobile = split_mobile(config.consignee_phone or "")
+    return BookingAddress(
+        CustomerName=config.consignee_customer_name or "",
+        CityName=config.city,
+        ContactPerson=config.consignee_contact_person or "",
+        StreetName=config.street,
+        Phone=mobile,
+        PhonePrefix=mobile_prefix,
+        Mobile=mobile,
+        MobilePrefix=mobile_prefix,
+        HouseNumber=str(config.house_number),
+    )
+
+
+def build_booking_request(
+    config: Config,
+    *,
+    service_number: int,
+    pickup_date: str,
+    pickup_from_time: str,
+    pickup_to_time: str,
+) -> BookingRequest:
+    return BookingRequest(
+        Email=config.username,
+        ContactPerson=config.consignee_contact_person or "",
+        OpenBy=config.username,
+        Weight=config.standard_weight,
+        ServiceNumber=service_number,
+        PackagesNumber=float(config.number_of_packages),
+        IsFlatPlace=False,
+        ConfirmByMail=False,
+        PickupToTime=pickup_to_time,
+        PickupFromTime=pickup_from_time,
+        PickupDate=pickup_date,
+        CustomerInfo=BookingCustomerInfo(
+            Address=build_booking_address(config),
+            CustomerID=int(config.customer_id),
+        ),
+        PackageType=2,
+    )
+
+
 def main() -> None:
     config = load_config()
     if config.run_insert_pickup_shipment or config.run_insert_pickup_drop_shipment:
@@ -497,6 +561,7 @@ def main() -> None:
         raise SystemExit(1) from exc
 
     tracking_number = config.tracking_number
+    booking_number = None
     pickup_point_id = config.pickup_point_id
     pickup_point_type = config.pickup_point_type
     pickup_drop_point_id = config.pickup_drop_point_id
@@ -520,6 +585,116 @@ def main() -> None:
             f"Resolved pickup-drop point: "
             f"{pickup_drop_point_type} / {pickup_drop_point_id}"
         )
+
+    booking_dates_domestic = None
+    booking_times_domestic = None
+
+    if (
+        config.run_get_pickup_dates
+        or config.run_get_pickup_times
+        or config.run_insert_domestic_booking
+    ):
+        booking_dates_domestic = client.bookings.get_pickup_dates(
+            CustomerNumber=config.customer_id,
+            CityName=config.city,
+            StreetName=config.street,
+            ServiceType=31,
+            Domestic=True,
+            HolidayServiceType=1,
+        )
+        print("Pickup booking dates response:")
+        print(booking_dates_domestic.model_dump_json(indent=2))
+
+    if config.run_get_pickup_times or config.run_insert_domestic_booking:
+        if not booking_dates_domestic or not booking_dates_domestic.Dates:
+            raise SystemExit("No booking dates available for domestic booking flow.")
+        selected_day = booking_dates_domestic.Dates[0].Id
+        booking_times_domestic = client.bookings.get_pickup_times(
+            CityName=config.city,
+            StreetName=config.street,
+            SelectedDay=selected_day,
+            ServiceType=31,
+            Domestic=True,
+        )
+        print("Pickup booking times response:")
+        print(
+            json.dumps(
+                [option.model_dump() for option in booking_times_domestic],
+                indent=2,
+                ensure_ascii=False,
+            )
+        )
+
+    if config.run_insert_domestic_booking:
+        if not booking_dates_domestic or not booking_dates_domestic.Dates:
+            raise SystemExit("No booking dates available for domestic booking.")
+        if not booking_times_domestic:
+            raise SystemExit("No booking times available for domestic booking.")
+        booking_number = client.bookings.insert_domestic_booking(
+            build_booking_request(
+                config,
+                service_number=31,
+                pickup_date=booking_dates_domestic.Dates[0].Id,
+                pickup_from_time=booking_times_domestic[0].FromTime,
+                pickup_to_time=booking_times_domestic[0].ToTime,
+            )
+        )
+        print(f"Domestic booking response: {booking_number}")
+
+    if config.run_insert_export_booking:
+        export_dates = client.bookings.get_pickup_dates(
+            CustomerNumber=config.customer_id,
+            CityName=config.city,
+            StreetName=config.street,
+            ServiceType=1,
+            Domestic=False,
+            HolidayServiceType=1,
+        )
+        print("Export booking dates response:")
+        print(export_dates.model_dump_json(indent=2))
+        if not export_dates.Dates:
+            raise SystemExit("No booking dates available for export booking.")
+        export_times = client.bookings.get_pickup_times(
+            CityName=config.city,
+            StreetName=config.street,
+            SelectedDay=export_dates.Dates[0].Id,
+            ServiceType=1,
+            Domestic=False,
+        )
+        print("Export booking times response:")
+        print(
+            json.dumps(
+                [option.model_dump() for option in export_times],
+                indent=2,
+                ensure_ascii=False,
+            )
+        )
+        if not export_times:
+            raise SystemExit("No booking times available for export booking.")
+        export_booking = client.bookings.insert_export_booking(
+            build_booking_request(
+                config,
+                service_number=1,
+                pickup_date=export_dates.Dates[0].Id,
+                pickup_from_time=export_times[0].FromTime,
+                pickup_to_time=export_times[0].ToTime,
+            )
+        )
+        print("Export booking response:")
+        print(export_booking.model_dump_json(indent=2))
+        booking_number = export_booking.BookingNumber or booking_number
+
+    if config.run_cancel_booking:
+        if not booking_number:
+            raise SystemExit("No booking number available for cancellation.")
+        cancel_response = client.bookings.cancel_booking(
+            CancelBookingRequest(
+                BookingNumber=int(str(booking_number).split("-")[0]),
+                Reason=config.booking_cancel_reason,
+            )
+        )
+        print("Cancel booking response:")
+        print(cancel_response.model_dump_json(indent=2))
 
     if config.run_insert_pickup_shipment:
         preparation = build_preparation(config)

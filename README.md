@@ -165,6 +165,14 @@ Additional shipment operations currently exposed by the SDK:
 - `get_wb_status(...)`
 - `get_pricing(...)`
 
+Booking operations currently exposed by the SDK:
+
+- `get_pickup_dates(...)`
+- `get_pickup_times(...)`
+- `insert_domestic_booking(...)`
+- `insert_export_booking(...)`
+- `cancel_booking(...)`
+
 The repository no longer keeps standalone example scripts under `examples/`.
 Use `scripts/integration_test.py` for real DEV verification and `docs/usage.md`
 for copy-paste SDK usage patterns.
