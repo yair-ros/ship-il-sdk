@@ -6,6 +6,16 @@ The format is based on Keep a Changelog and this project uses SemVer.
 
 ## [Unreleased]
 
+### Removed
+
+- Dropped support for Python 3.9, which reached end of life in October 2025.
+  The package now requires Python 3.10 or newer.
+
+### Changed
+
+- CI and release workflows now run on pinned `ubuntu-26.04` runners instead
+  of the floating `ubuntu-latest` label
+
 ## [0.2.4] - 2026-11-02
 
 ### Fixed
