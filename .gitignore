@@ -35,3 +35,4 @@ pip-wheel-metadata/
 # Editors
 .idea/
 .vscode/
+.claude/
