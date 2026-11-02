@@ -53,6 +53,11 @@ Changelog = "https://github.com/yair-ros/ship-il-sdk/blob/main/CHANGELOG.md"
 where = ["src"]
 include = ["ship_il_sdk", "ship_il_sdk.*"]
 
+[tool.ruff.lint]
+# Pin the rule set explicitly so CI does not drift when a new ruff release
+# changes its built-in defaults. This matches ruff's long-standing default.
+select = ["E4", "E7", "E9", "F"]
+
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]

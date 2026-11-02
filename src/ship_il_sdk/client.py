@@ -2,7 +2,7 @@ import base64
 
 import requests
 
-from .auth import authenticate
+from .auth import DEFAULT_TIMEOUT, authenticate
 from .config import Environment
 from .endpoints.booking import BookingAPI
 from .endpoints.labels import LabelsAPI
@@ -21,7 +21,7 @@ class ShipClient:
         password,
         customer_id,
         environment=Environment.PROD,
-        timeout=30,
+        timeout=DEFAULT_TIMEOUT,
     ):
         self.username = username
         self.password = password
@@ -49,6 +49,7 @@ class ShipClient:
             self.username,
             self.password,
             self.customer_id,
+            timeout=self.timeout,
         )
 
         self.tokens.set_token(token, ttl=expires_in)
