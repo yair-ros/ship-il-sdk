@@ -6,6 +6,8 @@ The format is based on Keep a Changelog and this project uses SemVer.
 
 ## [Unreleased]
 
+## [0.2.4] - 2026-11-02
+
 ### Fixed
 
 - `ShipClient.login()` and automatic login/token refresh now apply the client's
