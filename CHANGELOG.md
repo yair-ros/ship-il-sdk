@@ -6,6 +6,13 @@ The format is based on Keep a Changelog and this project uses SemVer.
 
 ## [Unreleased]
 
+### Fixed
+
+- `ShipClient.login()` and automatic login/token refresh now apply the client's
+  configured `timeout` to the `POST /Token` authentication request instead of
+  waiting indefinitely. `authenticate(...)` accepts an optional `timeout`
+  parameter (default `30` seconds, matching `ShipClient`).
+
 ## [0.2.3] - 2026-05-21
 
 ### Added

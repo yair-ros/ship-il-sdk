@@ -22,12 +22,35 @@ client = ShipClient(
 
 Creates a synchronous client for the SHIP Israel API.
 
+`timeout` (seconds, default `30`) applies to every HTTP request the client
+makes, including the authentication request issued by `client.login()` and by
+automatic login or token refresh before an API call.
+
 Authentication uses:
 
 ```text
 POST /Token
 Content-Type: application/x-www-form-urlencoded
 ```
+
+### `authenticate(...)`
+
+```python
+from ship_il_sdk.auth import authenticate
+
+token, expires_in = authenticate(
+    session,
+    base_url,
+    username,
+    password,
+    customer_id,
+    timeout=30,
+)
+```
+
+Low-level helper used by `ShipClient.login()`. `timeout` is optional and
+defaults to `30` seconds, matching `ShipClient`; it is passed straight to the
+underlying `session.post(...)` call.
 
 ## `AsyncShipClient`
 
