@@ -13,6 +13,11 @@ The format is based on Keep a Changelog and this project uses SemVer.
   waiting indefinitely. `authenticate(...)` accepts an optional `timeout`
   parameter (default `30` seconds, matching `ShipClient`).
 
+### Changed
+
+- Pinned ruff's lint rule selection in `pyproject.toml` so CI no longer breaks
+  when a new ruff release changes its default rules
+
 ## [0.2.3] - 2026-05-21
 
 ### Added
