@@ -83,7 +83,7 @@ GitHub Actions workflows live in `.github/workflows/`.
 
 - `ci.yml` runs on pull requests to `main` and manual dispatch. It installs the
   package with dev tooling, then runs lint, typecheck, and tests across Python
-  3.9 through 3.13, and builds the package once on Python 3.13.
+  3.10 through 3.13, and builds the package once on Python 3.13.
 - `release.yml` runs only on tags matching `v*`. It runs the same checks,
   builds `dist/`, uploads the distribution files as a workflow artifact,
   creates a GitHub Release, and publishes to PyPI through Trusted Publishing.
