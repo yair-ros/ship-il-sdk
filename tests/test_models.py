@@ -62,9 +62,7 @@ def test_export_booking_response_parses():
 
 
 def test_cancel_booking_response_parses_string_success():
-    response = CancelBookingResponse.model_validate(
-        {"IsSuccess": "true", "Error": ""}
-    )
+    response = CancelBookingResponse.model_validate({"IsSuccess": "true", "Error": ""})
 
     assert response.IsSuccess is True
 
@@ -135,7 +133,9 @@ def test_wb_status_response_parses_documented_shape():
 
 
 def test_wb_status_response_coerces_null_progress():
-    response = WbStatusResponse.model_validate({"Status": "Pending", "ShipmentProgress": None})
+    response = WbStatusResponse.model_validate(
+        {"Status": "Pending", "ShipmentProgress": None}
+    )
 
     assert response.ShipmentProgress == []
 

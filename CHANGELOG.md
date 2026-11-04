@@ -6,6 +6,15 @@ The format is based on Keep a Changelog and this project uses SemVer.
 
 ## [Unreleased]
 
+### Fixed
+
+- SDK logging now routes through the stdlib `ship_il_sdk` logger with a
+  `NullHandler`, leaving handlers, levels, and global structlog configuration
+  under host control. Sync and async clients work in windowed applications
+  without stdout/stderr, and logging failures no longer interrupt API calls.
+- SDK logs do not merge arbitrary host structlog context variables, which may
+  contain passwords, tokens, or authentication payloads.
+
 ### Removed
 
 - Dropped support for Python 3.9, which reached end of life in October 2025.

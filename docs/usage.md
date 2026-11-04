@@ -210,6 +210,26 @@ pricing = client.shipments.get_pricing(
 )
 ```
 
+## Logging
+
+Both clients emit structured JSON messages through the stdlib `ship_il_sdk`
+logger at `INFO` level. The package installs only a `NullHandler`; your app's
+handlers and levels control output, including propagation to root handlers.
+For example, if your app already configures a file handler, enable SDK events
+with:
+
+```python
+import logging
+
+logging.getLogger("ship_il_sdk").setLevel(logging.INFO)
+```
+
+The SDK does not configure global structlog settings or open stdout/stderr.
+Logging failures are discarded so they cannot interrupt API operations.
+Events include client/environment, token expiry duration, and API method/path/
+status metadata; passwords, tokens, auth payloads, and host structlog context
+variables are not included.
+
 ## Download a Label
 
 ```python
